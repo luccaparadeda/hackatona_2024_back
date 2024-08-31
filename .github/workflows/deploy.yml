@@ -55,4 +55,4 @@ jobs:
               port: 22
               script: |
                 cd /root/apps/hackatona_2024_back
-                docker stack deploy -c docker-compose.yml --with-registry-auth prod
+                docker compose up -d --build

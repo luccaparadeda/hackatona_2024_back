@@ -21,4 +21,4 @@ RUN npx prisma generate
 EXPOSE 8080
 
 # Command to run the app
-CMD [  "npm", "run", "start:migrate:prod" ]
+CMD [  "npm", "run", "start" ]
