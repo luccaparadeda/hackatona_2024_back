@@ -48,7 +48,7 @@ export class ChatService {
       const genAI = new GoogleGenerativeAI(process.env.API_KEY);
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       const result = await model.generateContent([
-        `UTILIZE OS PDFS QUE ESTÃO SENDO DISPONIBILIZADOS, PREFERENCIALMENTE UTILIZE OS PDFS PORÉM SE NÃO FOR POSSIVEL RELACIONAR, RESPONDA COMO ACHAR CONVENIENTE. A seguir vou te passar o histórico: ${history}. Daqui em diante é o novo prompt do usuário: ${prompt}`,
+        `UTILIZE OS PDFS QUE ESTÃO SENDO DISPONIBILIZADOS, PREFERENCIALMENTE UTILIZE OS PDFS PORÉM SE NÃO FOR POSSIVEL RELACIONAR, RESPONDA COMO ACHAR CONVENIENTE. SEJA OBJETIVO EM SUAS RESPOSTAS, COM NO MÁXIMO 3 PARÁGRAFOS. NUNCA, NUNCA E NUNCA DIGA QUE O PDF NÃO FORNECE INFORMAÇÕES SUFICIENTES. A seguir vou te passar o histórico: ${history}. Daqui em diante é o novo prompt do usuário: ${prompt}`,
         ...attatchments,
       ]);
       return result.response.text();
