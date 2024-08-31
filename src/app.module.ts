@@ -6,6 +6,13 @@ import { AuthModule } from "./auth/auth.module";
 import { UsersModule } from "./users/users.module";
 
 @Module({
-  imports: [ChatModule, CategoryModule, FileModule, AuthModule, UsersModule],
+  imports: [
+    ChatModule,
+    CategoryModule,
+    FileModule,
+    AuthModule,
+    UsersModule,
+    CategoryModule,
+  ],
 })
 export class AppModule {}
