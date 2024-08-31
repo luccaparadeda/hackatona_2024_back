@@ -5,9 +5,12 @@ import { PrismaClient } from "@prisma/client";
 export class PrismaService extends PrismaClient implements OnModuleInit {
   async onModuleInit() {
     await this.$connect();
-    await this.category.createMany({
-      data: [
-        {
+    const chuvas_intensas = await this.category.findFirst({
+      where: { name: "chuvas_intensas" },
+    });
+    if (!chuvas_intensas) {
+      await this.category.create({
+        data: {
           name: "chuvas_intensas",
           description:
             "Chuvas intensas são precipitações fortes e concentradas, que podem causar enchentes e deslizamentos, principalmente em áreas vulneráveis.",
@@ -18,7 +21,14 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
             "Quais são as ações imediatas em caso de enchente?",
           ],
         },
-        {
+      });
+    }
+    const incendio = await this.category.findFirst({
+      where: { name: "incendio" },
+    });
+    if (!incendio) {
+      await this.category.create({
+        data: {
           name: "incendio",
           description:
             "Incêndio é a queima descontrolada de materiais combustíveis, causando destruição e riscos à vida, ao meio ambiente e à propriedade.",
@@ -29,8 +39,8 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
             "O que fazer se você ficar preso em um edifício durante um incêndio?",
           ],
         },
-      ],
-    });
+      });
+    }
   }
 
   async enableShutdownHooks(app: INestApplication) {
