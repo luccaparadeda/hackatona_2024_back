@@ -10,31 +10,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-        - name: Checkout code
-          uses: actions/checkout@v3
+        # - name: Checkout code
+        #   uses: actions/checkout@v3
 
-        - name: Set up QEMU
-          uses: docker/setup-qemu-action@v3
+        # - name: Set up QEMU
+        #   uses: docker/setup-qemu-action@v3
 
-        - name: Set up Docker Buildx
-          uses: docker/setup-buildx-action@v3
+        # - name: Set up Docker Buildx
+        #   uses: docker/setup-buildx-action@v3
 
-        - name: Log in to DockerHub
-          uses: docker/login-action@v2
-          with:
-            username: ${{ secrets.DOCKER_USERNAME }}
-            password: ${{ secrets.DOCKER_PASSWORD }}
+        # - name: Log in to DockerHub
+        #   uses: docker/login-action@v2
+        #   with:
+        #     username: ${{ secrets.DOCKER_USERNAME }}
+        #     password: ${{ secrets.DOCKER_PASSWORD }}
 
-        - name: Build and push Docker image
-          uses: docker/build-push-action@v5
-          with:
-            context: .
-            file: Dockerfile
-            push: true
-            tags: |
-              ${{ secrets.DOCKER_USERNAME }}/hackatona_2024_backend:production
-            cache-from: type=gha
-            cache-to: type=gha,mode=max
+        # - name: Build and push Docker image
+        #   uses: docker/build-push-action@v5
+        #   with:
+        #     context: .
+        #     file: Dockerfile
+        #     push: true
+        #     tags: |
+        #       ${{ secrets.DOCKER_USERNAME }}/hackatona_2024_backend:production
+        #     cache-from: type=gha
+        #     cache-to: type=gha,mode=max
 
         - name: Copy Docker Compose file to server
           uses: appleboy/scp-action@v0.1.4
@@ -43,7 +43,7 @@ jobs:
             username: ${{ secrets.HOST_USERNAME }}
             password: ${{ secrets.HOST_PASSWORD }}
             port: 22
-            source: './docker-compose.yml'
+            source: '.'
             target: '/root/apps/hackatona_2024_back/'
 
         - name: Run image
@@ -55,4 +55,3 @@ jobs:
               port: 22
               script: |
                 cd /root/apps/hackatona_2024_back
-                docker compose up -d --build

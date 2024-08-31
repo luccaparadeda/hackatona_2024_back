@@ -19,7 +19,7 @@ export class FileService {
     try {
       fs.unlinkSync(`./data/${category}/${fileName}`);
     } catch (e) {
-      console.error(e);
+      return e;
     }
   }
 
