@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/database/database.service';
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "src/database/database.service";
 
 @Injectable()
 export class CategoryService {
@@ -10,7 +10,7 @@ export class CategoryService {
 
   findOne(id: number) {
     return this.database.category.findUnique({
-      where: { id },  
+      where: { id },
     });
   }
 }

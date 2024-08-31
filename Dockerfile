@@ -11,7 +11,7 @@ COPY . .
 # Install app dependencies
 RUN npm install tsc -g
 RUN npm i
-# RUN yarn prisma generate
+RUN npx prisma generate
 
 RUN npm run build 
 
@@ -22,9 +22,9 @@ FROM node:18 AS production
 WORKDIR /usr/src/app
 
 COPY --from=base usr/src/app/node_modules ./node_modules
-# COPY --from=base usr/src/app/prisma ./prisma
+COPY --from=base usr/src/app/prisma ./prisma
 COPY --from=base /usr/src/app/dist ./dist
 
 EXPOSE 8080
 # Start the server using the production build
-CMD [ "node", "dist/main.js" ]
+CMD [ "npm", "run", "start:prod" ]
