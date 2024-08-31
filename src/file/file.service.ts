@@ -5,6 +5,9 @@ import * as fs from "fs";
 export class FileService {
   async downloadFile(file: Express.Multer.File, category: string) {
     console.log(file);
+    if (!fs.existsSync(`./data/${category}`)) {
+      fs.mkdirSync(`./data/${category}`);
+    }
     fs.writeFileSync(`./data/${category}/${file.originalname}`, file.buffer);
   }
 
