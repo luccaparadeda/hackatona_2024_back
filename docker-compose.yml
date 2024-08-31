@@ -3,7 +3,8 @@ services:
     image: luccatisserparadeda/hackatona_2024_backend:production
     ports:
       - "8080:8080"
-    
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/hackatona_2024
   db:
     image: postgres:13
     environment:
