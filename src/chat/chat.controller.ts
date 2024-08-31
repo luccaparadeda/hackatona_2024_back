@@ -13,15 +13,28 @@ export class OllamaChatController {
       properties: {
         history: { type: "string" },
         prompt: { type: "string" },
+        chat_category: { type: "string" },
       },
       example: {
         history: "Hello",
         prompt: "How are you?",
+        chat_category: "chuvas_intensivas",
       },
     },
   })
   @Post("/")
-  async chat(@Body() { history, prompt }: { history: string; prompt: string }) {
-    return this.chatService.chatWithAI(prompt, history);
+  async chat(
+    @Body()
+    {
+      history,
+      prompt,
+      chat_category = "chuvas_intensivas",
+    }: {
+      history: string;
+      prompt: string;
+      chat_category: string;
+    },
+  ) {
+    return this.chatService.chatWithAI(prompt, history, chat_category);
   }
 }

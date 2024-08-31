@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import * as fs from "fs";
 
 @Injectable()
 export class ChatService {
@@ -19,14 +20,35 @@ export class ChatService {
   async chatWithAI(
     prompt: string,
     history: string = "",
-    // chat_category: string = "general",
+    chat_category: string,
   ) {
-    // const chat_category_pdfs = fs.readdirSync(`./data/${chat_category}`);
+    const folderPath = `./data/${chat_category}`;
+    const files = fs.readdirSync(folderPath, {
+      withFileTypes: true,
+    });
+
+    const filePromises = files.map(async (file) => {
+      const filePath = `${folderPath}/${file.name}`;
+
+      const fileData = await fs.promises.readFile(filePath);
+      const blob = Buffer.from(fileData).toString("base64"); // Adjust MIME type if needed
+      return { filePath, blob };
+    });
+
+    const chat_category_pdfs = await Promise.all(filePromises);
+    const attatchments = chat_category_pdfs.map((pdf) => {
+      return {
+        inlineData: {
+          data: pdf.blob,
+          mimeType: "application/pdf",
+        },
+      };
+    });
     const genAI = new GoogleGenerativeAI(process.env.API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const result = await model.generateContent([
       `${history} ${prompt}`,
-      // this.image,
+      ...attatchments,
     ]);
     return result.response.text();
   }
