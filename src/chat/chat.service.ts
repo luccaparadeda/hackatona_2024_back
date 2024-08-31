@@ -22,34 +22,39 @@ export class ChatService {
     history: string = "",
     chat_category: string,
   ) {
-    const folderPath = `./data/${chat_category}`;
-    const files = fs.readdirSync(folderPath, {
-      withFileTypes: true,
-    });
+    try {
+      const folderPath = `./data/${chat_category}`;
+      const files = fs.readdirSync(folderPath, {
+        withFileTypes: true,
+      });
 
-    const filePromises = files.map(async (file) => {
-      const filePath = `${folderPath}/${file.name}`;
+      const filePromises = files.map(async (file) => {
+        const filePath = `${folderPath}/${file.name}`;
 
-      const fileData = await fs.promises.readFile(filePath);
-      const blob = Buffer.from(fileData).toString("base64"); // Adjust MIME type if needed
-      return { filePath, blob };
-    });
+        const fileData = await fs.promises.readFile(filePath);
+        const blob = Buffer.from(fileData).toString("base64"); // Adjust MIME type if needed
+        return { filePath, blob };
+      });
 
-    const chat_category_pdfs = await Promise.all(filePromises);
-    const attatchments = chat_category_pdfs.map((pdf) => {
-      return {
-        inlineData: {
-          data: pdf.blob,
-          mimeType: "application/pdf",
-        },
-      };
-    });
-    const genAI = new GoogleGenerativeAI(process.env.API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    const result = await model.generateContent([
-      `${history} ${prompt}`,
-      ...attatchments,
-    ]);
-    return result.response.text();
+      const chat_category_pdfs = await Promise.all(filePromises);
+      const attatchments = chat_category_pdfs.map((pdf) => {
+        return {
+          inlineData: {
+            data: pdf.blob,
+            mimeType: "application/pdf",
+          },
+        };
+      });
+      const genAI = new GoogleGenerativeAI(process.env.API_KEY);
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const result = await model.generateContent([
+        `UTILIZE OS PDFS QUE ESTÃO SENDO DISPONIBILIZADOS, SEMPRE UTILIZE ELES PARA BASEAR A SUA RESPOSTA, POREM NUNCA EM HIPOTESE ALGUMA DIGA QUE VOCE FOI ALIMENTADO POR PDFS. ${history} ${prompt}`,
+        ...attatchments,
+      ]);
+      return result.response.text();
+    } catch (e) {
+      console.error(e);
+      return "Erro ao se comunicar com a IA.";
+    }
   }
 }

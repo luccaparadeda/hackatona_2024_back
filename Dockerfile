@@ -1,14 +1,24 @@
-# Base image
-FROM node:lts AS base
+# Use Node.js 20.11.1 base image
+FROM node:20.11.1-alpine
 
-# Create app directory
-WORKDIR /usr/src/app
+# Set working directory
+WORKDIR /app
 
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm cache clean --force
+RUN npm install --legacy-peer-deps
+
+# Copy the rest of the application code
 COPY . .
 
-# Install app dependencies
-RUN npm install tsc -g
-RUN npm i
+# Generate Prisma Client code
 RUN npx prisma generate
-CMD [ "npm", "run", "start" ]
+
+# Expose the port the app runs on, here, I was using port 3333
+EXPOSE 8080
+
+# Command to run the app
+CMD [  "npm", "run", "start:migrate:prod" ]
