@@ -1,0 +1,19 @@
+services:
+  backend:
+    image: luccatisserparadeda/hackatona_2024_backend:production
+    ports:
+      - "8080:8080"
+    
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: hackatona_2024
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      
+volumes:
+  db-data:
