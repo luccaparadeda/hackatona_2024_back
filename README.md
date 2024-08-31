@@ -58,6 +58,10 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Documentation
+
+To access the project documentation, visit the [Swagger Documentation](api.hackatona.luccaparadeda.com/docs). This resource provides comprehensive information on the API endpoints, usage, and integration.
+
 ## Resources
 
 Check out a few resources that may come in handy when working with NestJS:
