@@ -12,6 +12,5 @@ COPY . .
 RUN npm install tsc -g
 RUN npm i
 RUN npx prisma generate
-RUN npx prisma db push --force-reset
 
 CMD [ "npm", "run", "start" ]
