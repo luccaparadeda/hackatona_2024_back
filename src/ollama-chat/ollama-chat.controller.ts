@@ -9,6 +9,6 @@ export class OllamaChatController {
 
   @Get()
   async chat() {
-    return "aaa";
+    return this.ollamaChatService.chatWithAI();
   }
 }
