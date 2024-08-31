@@ -48,7 +48,7 @@ export class ChatService {
       const genAI = new GoogleGenerativeAI(process.env.API_KEY);
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       const result = await model.generateContent([
-        `UTILIZE OS PDFS QUE ESTÃO SENDO DISPONIBILIZADOS, SEMPRE UTILIZE ELES PARA BASEAR A SUA RESPOSTA, POREM NUNCA EM HIPOTESE ALGUMA DIGA QUE VOCE FOI ALIMENTADO POR PDFS. ${history} ${prompt}`,
+        `UTILIZE OS PDFS QUE ESTÃO SENDO DISPONIBILIZADOS, SEMPRE UTILIZE ELES PARA BASEAR A SUA RESPOSTA. A seguir vou te passar o histórico: ${history}. Daqui em diante é o novo prompt do usuário: ${prompt}`,
         ...attatchments,
       ]);
       return result.response.text();
